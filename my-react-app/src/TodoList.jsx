@@ -1,14 +1,11 @@
 import { useState } from "react";
+import AddTodoItem from "./AddTodoItem";
+import ListTodoItems from "./ListTodoItems";
 
 function TodoList(){
-    const [todo, setTodo] = useState("");
     const [todoList, setTodoList] = useState([]);
 
-    function handleTodoChange(event){
-        setTodo(event.target.value)
-    }
-
-    function addTodo(){
+    const addTodoCallback = (todo, setTodo) => {
         setTodoList(t => [...t, todo]);
         setTodo("");
     }
@@ -33,23 +30,13 @@ function TodoList(){
 
     return(
         <div>
-            <input 
-                value={todo} 
-                placeholder="Enter your todo..."
-                onChange={handleTodoChange} />
-            <button onClick={addTodo}>Enter</button>
-
-            <div>
-                <ol>
-                    {todoList.map((todo, index) => (
-                            <li className="todo-item" key={index}>{todo}
-                            <button onClick={() => deleteTodo(index)}>Delete</button>
-                            <button onClick={() => moveUp(index)}>Up</button>
-                            <button onClick={() => moveDown(index)}>Down</button></li>
-                            )
-                        )}
-                </ol>
-            </div>
+            <AddTodoItem addTodoCallback={addTodoCallback}/>
+            <ListTodoItems 
+                todoList={todoList} 
+                deleteTodo={deleteTodo}
+                moveUp={moveUp}
+                moveDown={moveDown}
+            />
         </div>
     )
 }
